@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
+  get 'posts/show'
+
   get 'home/new' => 'home#new'
-  get 'auth/:provider/callback' => 'home#create'#このpathを通して認証が行われる。
+  get 'posts/:id' => 'posts#show'
+  get 'auth/:provider/callback' => 'home#entry'#このpathを通して認証が行われる。
+  post 'auth/:provider/callback' => 'home#entry'#動くかわからんけど試しに
+  post 'home/create' => 'home#create'
 
   root 'home#new'
 

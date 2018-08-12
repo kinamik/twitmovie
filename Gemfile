@@ -53,3 +53,6 @@ gem 'coffee-script-source', '1.8.0'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'dotenv-rails' #環境変数を簡単に利用できるgem
+
+
+gem 'twitter'

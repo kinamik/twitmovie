@@ -1,0 +1,11 @@
+<h1>Home#entry</h1>
+<p>Find me in app/views/home/entry.html.erb</p>
+
+<%= @nickname %>
+<%= image_tag  @image_url %>
+
+#フォームヘルパーを利用しhome/createにinput_content文章を渡す。その前にtwitter認証を行うため/auth/twitterを経由する。
+<%= form_tag("/home/create", method: "post") do %>
+    <%= text_field_tag("input_content") %>
+    <%= submit_tag("作成") %>
+  <% end %>

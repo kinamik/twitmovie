@@ -10,7 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180717114318) do
+ActiveRecord::Schema.define(version: 20180812080325) do
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "post_id"
+    t.integer  "comment_no"
+    t.string   "comment_user_id"
+    t.text     "comment_text"
+    t.boolean  "del_flg"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "friends", force: :cascade do |t|
+    t.string   "post_user_id"
+    t.string   "friend_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "post_friends", force: :cascade do |t|
+    t.string   "post_id"
+    t.string   "post_user_id"
+    t.string   "friend_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.text     "content"
+    t.string   "ytb_url"
+    t.string   "post_user_id"
+    t.boolean  "del_flg"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "post_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "provider"
