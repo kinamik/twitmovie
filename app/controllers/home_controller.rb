@@ -25,7 +25,7 @@ class HomeController < ApplicationController
 
     #post_friendsの登録
     #TwitterAPIクラスの取得（ominiauthではない）
-  　client = Twitter::REST::Client.new do |config|
+    client = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV["TWITTER_CONSUMER_KEY"]
       config.consumer_secret     = ENV["TWITTER_CONSUMER_SECRET"]
       config.access_token        = ENV["TWITTER_ACCESS_TOKEN"]
@@ -36,14 +36,16 @@ class HomeController < ApplicationController
     #投稿者のidからフォロー相手（フォロワーではない）のリストを取得
     arrIds = client.friend_ids(user_id: session[:post_user_id])
 
-　　#ループしてpostFriendを登録
+    puts "ポストID確認#{@pid}"
+
+    #ループしてpostFriendを登録
     arrIds.each do |ids|
-      postFriend  = PostFriend.new(post_user_id:@pid,post_user_id:session[:post_user_id],friend_id:ids)
+      postFriend  = PostFriend.new(post_id:@pid,post_user_id:session[:post_user_id],friend_id:ids)
       postFriend.save
     end
 
     #postsに移動
-    redirect_to controller: 'posts', action: 'show', id: @pid
+    redirect_to controller: 'posts', action: 'login', id: @pid
   end
 
 
@@ -55,7 +57,7 @@ class HomeController < ApplicationController
     #アイコン
     @image_url = user.image_url
     #ユーザーIDをセッションに設定
-    session[:post_user_id] = user.id
+    session[:post_user_id] = user.uid
   end
 
 
