@@ -1,0 +1,66 @@
+have_func: checking for mmap() in sys/mman.h... -------------------- no
+
+"x86_64-w64-mingw32-gcc -o conftest.exe -IC:/Ruby23-x64/include/ruby-2.3.0/x64-mingw32 -IC:/Ruby23-x64/include/ruby-2.3.0/ruby/backward -IC:/Ruby23-x64/include/ruby-2.3.0 -I. -DFD_SETSIZE=2048 -D_WIN32_WINNT=0x0501 -D__MINGW_USE_VC2005_COMPAT -D_FILE_OFFSET_BITS=64   -O3 -fno-omit-frame-pointer -fno-fast-math -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -LC:/Ruby23-x64/lib -L.      -lx64-msvcrt-ruby230  -lshell32 -lws2_32 -liphlpapi -limagehlp -lshlwapi  "
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <winsock2.h>
+4: #include <windows.h>
+5: int main(int argc, char **argv)
+6: {
+7:   return 0;
+8: }
+/* end */
+
+"x86_64-w64-mingw32-gcc -o conftest.exe -IC:/Ruby23-x64/include/ruby-2.3.0/x64-mingw32 -IC:/Ruby23-x64/include/ruby-2.3.0/ruby/backward -IC:/Ruby23-x64/include/ruby-2.3.0 -I. -DFD_SETSIZE=2048 -D_WIN32_WINNT=0x0501 -D__MINGW_USE_VC2005_COMPAT -D_FILE_OFFSET_BITS=64   -O3 -fno-omit-frame-pointer -fno-fast-math -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -LC:/Ruby23-x64/lib -L.      -lx64-msvcrt-ruby230  -lshell32 -lws2_32 -liphlpapi -limagehlp -lshlwapi  "
+conftest.c:5:22: fatal error: sys/mman.h: No such file or directory
+compilation terminated.
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: #include <sys/mman.h>
+ 6: 
+ 7: /*top*/
+ 8: extern int t(void);
+ 9: int main(int argc, char **argv)
+10: {
+11:   if (argc > 1000000) {
+12:     printf("%p", &t);
+13:   }
+14: 
+15:   return 0;
+16: }
+17: int t(void) { void ((*volatile p)()); p = (void ((*)()))mmap; return !p; }
+/* end */
+
+"x86_64-w64-mingw32-gcc -o conftest.exe -IC:/Ruby23-x64/include/ruby-2.3.0/x64-mingw32 -IC:/Ruby23-x64/include/ruby-2.3.0/ruby/backward -IC:/Ruby23-x64/include/ruby-2.3.0 -I. -DFD_SETSIZE=2048 -D_WIN32_WINNT=0x0501 -D__MINGW_USE_VC2005_COMPAT -D_FILE_OFFSET_BITS=64   -O3 -fno-omit-frame-pointer -fno-fast-math -g -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat conftest.c  -L. -LC:/Ruby23-x64/lib -L.      -lx64-msvcrt-ruby230  -lshell32 -lws2_32 -liphlpapi -limagehlp -lshlwapi  "
+conftest.c:5:22: fatal error: sys/mman.h: No such file or directory
+compilation terminated.
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <winsock2.h>
+ 4: #include <windows.h>
+ 5: #include <sys/mman.h>
+ 6: 
+ 7: /*top*/
+ 8: extern int t(void);
+ 9: int main(int argc, char **argv)
+10: {
+11:   if (argc > 1000000) {
+12:     printf("%p", &t);
+13:   }
+14: 
+15:   return 0;
+16: }
+17: extern void mmap();
+18: int t(void) { mmap(); return 0; }
+/* end */
+
+--------------------
+

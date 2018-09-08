@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'auth/post/:provider/callback' => 'posts#show'
   post 'auth/post/:provider/callback' => 'posts#show'
   post 'home/create' => 'home#create'
+  get 'posts/error' => 'posts#error'
 
   root 'home#new'
 

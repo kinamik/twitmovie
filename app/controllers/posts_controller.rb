@@ -4,20 +4,36 @@ class PostsController < ApplicationController
 
   def show
 
+    @userTypeFlg = 0
+
     #視聴者のユーザー情報取得
-    user = User.find_or_create_from_auth_hash(request.env['omniauth.auth'])
+    @user = User.find_or_create_from_auth_hash(request.env['omniauth.auth'])
 
     #Postをセッションのidで取得
-    post  = Post.find_by(post_id:session[:post_id])
+    @post  = Post.find_by(post_id:session[:post_id])
 
-    #ポストのユーザーのフォロー相手かを確認
-    #PostFriendをpost_idで検索し、複数取得したポストのユーザーのフォロー相手を視聴者のIDと判定する
-    PostFriend.where(post_id:session[:post_id]).each do |postFriends|
-      puts("ループ内#{postFriends.id}")
-      #一致した場合
-      if postFriends.friend_id == user.uid
-        then puts("できたよ#{postFriends.friend_id}")
-      end
+    #投稿者と視聴者が同じか判定
+    if @post.post_user_id == @user.uid
+      then @userTypeFlg = 1
+    #違う場合はポストのユーザーのフォロー相手かを確認
+      else
+        #PostFriendをpost_idで検索し、複数取得したポストのユーザーのフォロー相手を視聴者のIDと判定する
+        PostFriend.where(post_id:session[:post_id]).each do |postFriends|
+          puts("ループ内#{postFriends.id}")
+          #一致した場合
+          if postFriends.friend_id == @user.uid
+            then
+              puts("できたよ#{postFriends.friend_id}")
+              @userTypeFlg = 2
+
+          end
+        end
+    end
+
+    #投稿者でも投稿者のフォロー先でもなかった場合はエラーページへ遷移
+    if @userTypeFlg == 0
+      then
+      redirect_to controller: 'posts', action: 'error'
     end
 
   end
@@ -42,6 +58,10 @@ class PostsController < ApplicationController
     
 
   end
+
+  def error
+  end
+
 
 
 
