@@ -8,7 +8,6 @@ set :repo_url, 'https://github.com/kinamik/twitmovie.git'
 set :deploy_to, '/var/www/twitmovie'
 
 set :keep_releases, 5
-set :ssh_options, :port =&amp;gt; "10022"
 
 set :rbenv_type, :system
 set :rbenv_ruby, '2.3.3'#rubyのバージョン
