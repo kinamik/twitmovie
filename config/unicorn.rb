@@ -1,5 +1,5 @@
 
-@app_path = '/home/apuser/twitmovie'
+@app_path = '/appl/twitmovie'
 
 worker_processes 2
 working_directory "#{@app_path}/"
