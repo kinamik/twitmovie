@@ -1,4 +1,4 @@
-lock "~> 3.10.1"
+lock "~> 3.11.0"
 
 set :application, 'twitmovie'
 set :repo_url, 'https://github.com/kinamik/twitmovie.git'
