@@ -61,6 +61,5 @@ gem 'dotenv-rails' #環境変数を簡単に利用できるgem
 
 gem 'twitter'
 
-platforms :ruby do
-  gem 'unicorn'
-end
+
+gem 'unicorn'

@@ -12,12 +12,12 @@ NULLCMD = :
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /C/Ruby23-x64/include/ruby-2.3.0
+topdir = /home/apuser/.rbenv/versions/2.3.3/include/ruby-2.3.0
 hdrdir = $(topdir)
-arch_hdrdir = C:/Ruby23-x64/include/ruby-2.3.0/x64-mingw32
+arch_hdrdir = /home/apuser/.rbenv/versions/2.3.3/include/ruby-2.3.0/x86_64-linux
 PATH_SEPARATOR = :
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
-prefix = $(DESTDIR)/C/Ruby23-x64
+prefix = $(DESTDIR)/home/apuser/.rbenv/versions/2.3.3
 rubysitearchprefix = $(rubylibprefix)/$(sitearch)
 rubyarchprefix = $(rubylibprefix)/$(arch)
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
@@ -31,8 +31,8 @@ rubyhdrdir = $(includedir)/$(RUBY_VERSION_NAME)
 vendorarchdir = $(vendorlibdir)/$(sitearch)
 vendorlibdir = $(vendordir)/$(ruby_version)
 vendordir = $(rubylibprefix)/vendor_ruby
-sitearchdir = $(DESTDIR)./.gem.20180904-2780-bls1kh
-sitelibdir = $(DESTDIR)./.gem.20180904-2780-bls1kh
+sitearchdir = $(DESTDIR)./.gem.20180908-1649-pufp1z
+sitelibdir = $(DESTDIR)./.gem.20180908-1649-pufp1z
 sitedir = $(rubylibprefix)/site_ruby
 rubyarchdir = $(rubylibdir)/$(arch)
 rubylibdir = $(rubylibprefix)/$(ruby_version)
@@ -63,12 +63,12 @@ bindir = $(exec_prefix)/bin
 archdir = $(rubyarchdir)
 
 
-CC = x86_64-w64-mingw32-gcc
-CXX = x86_64-w64-mingw32-g++
-LIBRUBY = lib$(RUBY_SO_NAME).dll.a
+CC = gcc
+CXX = g++
+LIBRUBY = $(LIBRUBY_A)
 LIBRUBY_A = lib$(RUBY_SO_NAME)-static.a
-LIBRUBYARG_SHARED = -l$(RUBY_SO_NAME)
-LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)-static
+LIBRUBYARG_SHARED = -Wl,-R$(libdir) -L$(libdir) 
+LIBRUBYARG_STATIC = -Wl,-R$(libdir) -L$(libdir) -l$(RUBY_SO_NAME)-static
 empty =
 OUTFLAG = -o $(empty)
 COUTFLAG = -o $(empty)
@@ -76,33 +76,33 @@ COUTFLAG = -o $(empty)
 RUBY_EXTCONF_H = 
 cflags   =  $(optflags) $(debugflags) $(warnflags)
 cxxflags =  $(optflags) $(debugflags) $(warnflags)
-optflags = -O3 -fno-omit-frame-pointer -fno-fast-math
-debugflags = -g
+optflags = -O3 -fno-fast-math
+debugflags = -ggdb3
 warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration -Wdeprecated-declarations -Wno-packed-bitfield-compat
-CCDLFLAGS = 
+CCDLFLAGS = -fPIC
 CFLAGS   = $(CCDLFLAGS) $(cflags) $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
-DEFS     = -D_FILE_OFFSET_BITS=64
-CPPFLAGS =  -DFD_SETSIZE=2048 -D_WIN32_WINNT=0x0501 -D__MINGW_USE_VC2005_COMPAT $(DEFS) $(cppflags)
+DEFS     = 
+CPPFLAGS = -DHAVE_OPENSSL_BIO_H -I/home/apuser/.rbenv/versions/2.3.3/include  $(DEFS) $(cppflags)
 CXXFLAGS = $(CCDLFLAGS) $(cxxflags) $(ARCH_FLAG)
-ldflags  = -L. 
-dldflags =  -Wl,--enable-auto-image-base,--enable-auto-import $(DEFFILE) 
+ldflags  = -L. -L/home/apuser/.rbenv/versions/2.3.3/lib  -fstack-protector -rdynamic -Wl,-export-dynamic
+dldflags =  
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
-LDSHARED = $(CC) -shared $(if $(filter-out -g -g0,$(debugflags)),,-s)
-LDSHAREDXX = $(CXX) -shared $(if $(filter-out -g -g0,$(debugflags)),,-s)
+LDSHARED = $(CC) -shared
+LDSHAREDXX = $(CXX) -shared
 AR = ar
-EXEEXT = .exe
+EXEEXT = 
 
 RUBY_INSTALL_NAME = $(RUBY_BASE_NAME)
-RUBY_SO_NAME = x64-msvcrt-ruby230
-RUBYW_INSTALL_NAME = $(RUBYW_BASE_NAME)
+RUBY_SO_NAME = ruby
+RUBYW_INSTALL_NAME = 
 RUBY_VERSION_NAME = $(RUBY_BASE_NAME)-$(ruby_version)
 RUBYW_BASE_NAME = rubyw
 RUBY_BASE_NAME = ruby
 
-arch = x64-mingw32
-sitearch = x64-msvcrt
+arch = x86_64-linux
+sitearch = $(arch)
 ruby_version = 2.3.0
 ruby = $(bindir)/$(RUBY_BASE_NAME)
 RUBY = $(ruby)
@@ -123,10 +123,10 @@ TOUCH = exit >
 preload = 
 
 libpath = . $(libdir)
-LIBPATH =  -L. -L$(libdir)
-DEFFILE = $(TARGET)-$(arch).def
+LIBPATH =  -L. -L$(libdir) -Wl,-R$(libdir)
+DEFFILE = 
 
-CLEANFILES = mkmf.log $(DEFFILE)
+CLEANFILES = mkmf.log
 DISTCLEANFILES = 
 DISTCLEANDIRS = 
 
@@ -134,11 +134,11 @@ extout =
 extout_prefix = 
 target_prefix = /puma
 LOCAL_LIBS = 
-LIBS = $(LIBRUBYARG_SHARED)  -lshell32 -lws2_32 -liphlpapi -limagehlp -lshlwapi  
-ORIG_SRCS = http11_parser.c io_buffer.c mini_ssl.c puma_http11.c
+LIBS =  -lssl -lcrypto  -lpthread -ldl -lcrypt -lm   -lc
+ORIG_SRCS = io_buffer.c puma_http11.c http11_parser.c mini_ssl.c
 SRCS = $(ORIG_SRCS) 
-OBJS = http11_parser.o io_buffer.o mini_ssl.o puma_http11.o
-HDRS = $(srcdir)/ext_help.h $(srcdir)/http11_parser.h
+OBJS = io_buffer.o puma_http11.o http11_parser.o mini_ssl.o
+HDRS = $(srcdir)/http11_parser.h $(srcdir)/ext_help.h
 TARGET = puma_http11
 TARGET_NAME = puma_http11
 TARGET_ENTRY = Init_$(TARGET_NAME)
@@ -250,15 +250,11 @@ site-install-rb: install-rb
 	$(ECHO) translating $(<)
 	$(Q) $(CC) $(INCFLAGS) $(CPPFLAGS) $(CFLAGS) $(COUTFLAG)$@ -S $<
 
-$(DLLIB): $(DEFFILE) $(OBJS) Makefile
+$(DLLIB): $(OBJS) Makefile
 	$(ECHO) linking shared-object puma/$(DLLIB)
 	-$(Q)$(RM) $(@)
 	$(Q) $(LDSHARED) -o $@ $(OBJS) $(LIBPATH) $(DLDFLAGS) $(LOCAL_LIBS) $(LIBS)
 
 
-
-$(DEFFILE): 
-	$(ECHO) generating $(@)
-	$(Q) (echo EXPORTS && echo $(TARGET_ENTRY)) > $@
 
 $(OBJS): $(HDRS) $(ruby_headers)
