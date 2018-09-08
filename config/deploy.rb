@@ -3,7 +3,7 @@ lock "~> 3.11.0"
 set :application, 'twitmovie'
 set :repo_url, 'https://github.com/kinamik/twitmovie.git'
 
-
+set :rbenv_path, '/home/apuser/.rbenv'
 
 set :deploy_to, '/var/www/twitmovie'
 
