@@ -3,10 +3,11 @@ Rails.application.routes.draw do
 
   get 'home/new' => 'home#new'
   get 'posts/login/:id' => 'posts#login'
-  get 'auth/entry/:provider/callback' => 'home#entry'#このpathを通して認証が行われる。
-  post 'auth/entry/:provider/callback' => 'home#entry'#動くかわからんけど試しに
-  get 'auth/post/:provider/callback' => 'posts#show'
-  post 'auth/post/:provider/callback' => 'posts#show'
+  get 'auth/entry/:provider/callback' => 'home#oauthLogin'#このpathを通して認証が行われる。
+  post 'auth/entry/:provider/callback' => 'home#oauthLogin'#動くかわからんけど試しに
+  get 'home/entry' => 'home#entry'
+  get 'auth/post/:provider/callback' => 'posts#oauthLogin'
+  post 'auth/post/:provider/callback' => 'posts#oauthLogin'
   post 'home/create' => 'home#create'
   get 'posts/error' => 'posts#error'
 

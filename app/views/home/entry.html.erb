@@ -1,11 +1,14 @@
-<h1>Home#entry</h1>
-<p>Find me in app/views/home/entry.html.erb</p>
+<h1>TwitterのFF内でしか見れない掲示板</h1>
 
-<%= @nickname %>
-<%= image_tag  @image_url %>
-
-#フォームヘルパーを利用しhome/createにinput_content文章を渡す。その前にtwitter認証を行うため/auth/twitterを経由する。
+こんにちは、<%= @nickname %>さん。<%= image_tag  @image_url %><br>
+<br>
+<!--#フォームヘルパーを利用しhome/createにinput_content文章を渡す。その前にtwitter認証を行うため/auth/twitterを経由する。-->
+フォロー相手と共有したい文章を記入し、「作成」ボタンを押してください。<br>
 <%= form_tag("/home/create", method: "post") do %>
     <%= text_field_tag("input_content") %>
     <%= submit_tag("作成") %>
   <% end %>
+<br>
+注意！！<br>
+想定外のトラブル等により投稿内容が第三者に閲覧される可能性があります。<br>
+個人情報や他社への誹謗中傷はお控えください。<br>

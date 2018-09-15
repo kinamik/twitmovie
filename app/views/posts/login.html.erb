@@ -1,5 +1,5 @@
-<h1>Posts#show</h1>
-<p>Find me in app/views/posts/login.html.erb</p>
+<h1>TwitterのFF内でしか見れない掲示板</h1>
 
-<%= "ここは#{@postUsername}の投稿です。"%>
-<%= link_to 'Twitterでログイン', '/auth/post/twitter' %>
+<%= "ここは#{@postUsername}の投稿です。"%><br>
+以下のリンクからツイッターにログインし、投稿者のフォロワーであれば投稿内容を閲覧できます。<br>
+<%= link_to 'ログイン', '/auth/post/twitter' %>

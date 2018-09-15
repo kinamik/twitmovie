@@ -9,6 +9,9 @@ class HomeController < ApplicationController
     #post_idのインスタンス変数（URLに使用するためここで宣言）
     @pid = nil
 
+    #セッションよりoauthユーザー情報を取得
+    postUser = session[:auth_user]
+
     #postsの登録
     #ユニークとなるpost_idを生成する
     loop{
@@ -16,7 +19,7 @@ class HomeController < ApplicationController
       #Postsを生成したpost_idで検索し、存在しなければ登録してループを抜ける
       if !Post.find_by(post_id:@pid) then
         #contentにはviewにて入力した文字列、post_user_idには取得したユーザーid、post_idには生成したidを設定
-        posts = Post.new(content:params['input_content'],post_user_id:session[:post_user_id],post_id:@pid)
+        posts = Post.new(content:params['input_content'],post_user_id:postUser["uid"],post_id:@pid)
         posts.save
         break
       end
@@ -34,13 +37,13 @@ class HomeController < ApplicationController
 
     arrIds = Array.new
     #投稿者のidからフォロー相手（フォロワーではない）のリストを取得
-    arrIds = client.friend_ids(user_id: session[:post_user_id])
+    arrIds = client.friend_ids(user_id:postUser["uid"])
 
     puts "ポストID確認#{@pid}"
 
     #ループしてpostFriendを登録
     arrIds.each do |ids|
-      postFriend  = PostFriend.new(post_id:@pid,post_user_id:session[:post_user_id],friend_id:ids)
+      postFriend  = PostFriend.new(post_id:@pid,post_user_id:postUser["uid"],friend_id:ids)
       postFriend.save
     end
 
@@ -49,15 +52,30 @@ class HomeController < ApplicationController
   end
 
 
+  #記事作成アクション（元々はログイン処理を行うアクションだったため、名前がentry）
   def entry
-    #ユーザー情報取得
-    user = User.find_or_create_from_auth_hash(request.env['omniauth.auth'])
+
+    #セッションよりoauthユーザー情報を取得
+    postUser = session[:auth_user]
     #ユーザー名
-    @nickname = user.username
+    @nickname = postUser["username"]
     #アイコン
-    @image_url = user.image_url
-    #ユーザーIDをセッションに設定
-    session[:post_user_id] = user.uid
+    @image_url = postUser["image_url"]
+
+  end
+
+  #oauthのログイン時にする処理（画面表示はない）
+  def oauthLogin
+    #oauthのユーザ情報のセッションがあるか確認
+    if session[:auth_user] == nil
+      then
+      #ない場合は取得する
+      #ユーザー情報取得
+      session[:auth_user] = User.find_or_create_from_auth_hash(request.env['omniauth.auth'])
+    end
+    #作成画面に遷移
+    redirect_to controller: 'home', action: 'entry'
+
   end
 
 
